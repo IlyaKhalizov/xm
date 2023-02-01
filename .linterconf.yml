@@ -1,0 +1,22 @@
+run:
+  skip-dirs:
+    - docs
+
+linters:
+  disable-all: true
+  enable:
+    - gosec
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - typecheck
+    - unused
+    - gofmt
+
+issues:
+  exclude-rules:
+    - text: "G114"
+      linters:
+        - gosec

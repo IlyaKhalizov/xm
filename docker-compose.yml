@@ -1,0 +1,49 @@
+version: '1'
+services:
+  xn-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on: 
+      - xm-postgres
+    environment:
+      POSTGRESQL_DSN: ${POSTGRESQL_DSN}
+      SQL_DRIVER: ${SQL_DRIVER}
+      API_TOKEN: ${API_TOKEN}
+      HTTP_PORT: ${HTTP_PORT}
+    networks:
+      - xmNet
+
+  xm-postgres:
+    image: postgres
+    environment:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - xmNet
+
+  migrate:
+    image: migrate/migrate
+    depends_on:
+      - xm-postgres
+    volumes:
+      - ./internal/repositories/migrations:/database
+    command:
+      [ "-path", "/database", "-database",  "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/postgres?sslmode=disable", "up" ]
+    networks:
+      - xmNet
+
+networks:
+  xmNet:
+    driver: bridge
+
+volumes:
+  pgdata:
+

@@ -1,0 +1,158 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: xm
+  description: API of company service.
+servers:
+  - url: localhost
+    description: Local.
+paths:
+  /v1/company/{id}:
+    get:
+      summary: Company data
+      description: Returns company data
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Company id
+          schema:
+            type: number
+            format: int64
+            minimum: 1
+      responses:
+        200:
+          description: Company was found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    format: int64
+                  name:
+                    type: string
+                  description: 
+                    type: string
+                  employees_amount:
+                    type: number
+                    format: int64
+                  registered:
+                    type: boolean
+                  type:
+                    type: string
+        204:
+          description: Company was not found
+        500:
+          description: Any server error
+    patch:
+      summary: Updated Company
+      description: Update a company
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Company id
+          schema:
+            type: number
+            format: int64
+            minimum: 1
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        employees_amount:
+          type: number
+          format: int64
+        registered:
+          type: boolean
+        type:
+          type: string
+      responses:
+        200:
+          description: Company was updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    format: int64
+                  name:
+                    type: string
+                  description: 
+                    type: string
+                  employees_amount:
+                    type: number
+                    format: int64
+                  registered:
+                    type: boolean
+                  type:
+                    type: string
+        400:
+          description: Company was not updated
+        500:
+          description: Any server error
+    delete:
+      summary: Delete Company
+      description: Delete a company
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Company id
+          schema:
+            type: number
+            format: int64
+            minimum: 1
+      responses:
+        200:
+          description: Company was deleted
+        400:
+          description: Company was not deleted
+/v1/company:
+    post:
+      summary: New Company
+      description: Add a company
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        employees_amount:
+          type: number
+          format: int64
+        registered:
+          type: boolean
+        type:
+          type: string
+      responses:
+        201:
+          description: Company was created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    format: int64
+                  name:
+                    type: string
+                  description: 
+                    type: string
+                  employees_amount:
+                    type: number
+                    format: int64
+                  registered:
+                    type: boolean
+                  type:
+                    type: string
+        400:
+          description: Company was not created
+        500:
+          description: Any server error
+
